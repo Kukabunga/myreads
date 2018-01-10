@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import MainMenu from "./MainMenu"
 
 const SearchSection = ({ }) => (
     <div className="empty-section">

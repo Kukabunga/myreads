@@ -15,7 +15,7 @@ class BookShelf extends Component {
     render() {
         const {books, type, onMoveTo} = this.props;
         let listOrLoader = null;
-        if (books) {
+        if (books && books.length > 0) {
             listOrLoader = <BookList books={books} type={type} onMoveTo={onMoveTo}/>
         } else {
             listOrLoader = <Loader />

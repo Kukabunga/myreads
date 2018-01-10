@@ -1,10 +1,10 @@
 import React from 'react'
-import './App.css'
-import MainHeader from './components/MainHeader'
 import { Route } from 'react-router-dom'
+import MainHeader from './components/MainHeader'
+import MainMenu from "./components/MainMenu"
 import HomePage from './HomePage';
 import MyReadsPage from './MyReadsPage'
-import MainMenu from "./components/MainMenu"
+import SearchPage from './SearchPage'
 
 class BooksApp extends React.Component {
   render() {
@@ -19,6 +19,9 @@ class BooksApp extends React.Component {
         )} />
         <Route exact path="/myreads" render={() => (
           <MyReadsPage />
+        )} />
+        <Route exact path="/search" render={() => (
+          <SearchPage />
         )} />
       </div>
     )
