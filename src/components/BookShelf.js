@@ -2,19 +2,28 @@ import React from 'react'
 import { Component } from 'react'
 import PropTypes from 'prop-types'
 import BookList from './BookList'
-import * as BooksAPI from '../BooksAPI'
+import Loader from './Loader'
 
 class BookShelf extends Component {
     static propTypes = {
         headerTitle: PropTypes.string.isRequired,
         styleColor: PropTypes.string,
-        books: PropTypes.array
+        books: PropTypes.array,
+        type: PropTypes.string.isRequired,
+        onMoveTo: PropTypes.func
     }
     render() {
+        const {books, type, onMoveTo} = this.props;
+        let listOrLoader = null;
+        if (books) {
+            listOrLoader = <BookList books={books} type={type} onMoveTo={onMoveTo}/>
+        } else {
+            listOrLoader = <Loader />
+        }
         return (
-            <div className={`bookshelf ${this.props.styleColor}`}>
+            <div className={`bookshelf ${this.props.styleColor} bookshelf--min-height`}>
                 <h2 className="bookshelf-title">{this.props.headerTitle}</h2>
-                <BookList books={this.props.books} />
+                {listOrLoader}
             </div>
         )
     }

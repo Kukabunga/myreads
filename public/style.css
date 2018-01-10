@@ -549,6 +549,10 @@
      background-image: linear-gradient(to right bottom, rgba(255, 185, 0, 0.85), rgba(255, 119, 48, 0.85));
  }
 
+ .bookshelf--min-height {
+     min-height: 30rem;
+ }
+
  .bookshelf-title {
      text-align: center;
      text-transform: uppercase;
@@ -639,6 +643,7 @@
      font-size: 1.2rem;
      margin-bottom: 1rem;
      color: #fff;
+     padding: 0 3px;
  }
 
  .book-wrapper__cta {
@@ -670,11 +675,11 @@
      perspective: 150rem;
      -moz-perspective: 150rem;
      position: relative;
-     height: 30rem;
+     height: 34rem;
  }
 
  .card__side {
-     height: 30rem;
+     /* height: 34rem; */
      transition: all .8s ease;
      position: absolute;
      top: 0;
@@ -693,6 +698,7 @@
 
  .card__side--back {
      transform: rotateY(180deg);
+     height: 30rem;
  }
 
  .card__side--back-1 {

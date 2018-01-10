@@ -5,30 +5,52 @@ import MainHeader from './components/MainHeader'
 import Features from './components/Features'
 import Footer from './components/Footer'
 import SearchSection from './components/SearchSection'
-import Loader from './components/Loader'
-
+import * as Actions from './components/Actions'
+import * as ShelfType from './components/ShelfType'
 
 class MyReadsPage extends Component {
     state = {
         books: []
     }
     componentDidMount() {
-        const books = BooksAPI.getAll();
-        this.setState({ books })
+        BooksAPI.getAll().then((books) => {this.setState({books})});
+    }
+
+    onMoveTo = (e, action, bookid) => {
+        e.preventDefault();
+        switch(action) {
+            case Actions.CURRENTLY_READING: 
+                console.log(action, bookid);
+                break;
+            case Actions.WANT_TO_READ:
+                console.log(action, bookid);
+                break;
+            case Actions.READ:
+                console.log(action, bookid);
+                break;
+        }
     }
     render() {
-        let section = null;
-        if (this.state.books.length == 0) {
-            section = <SearchSection />
-        } else {
-            section = <BookShelf />
-        }
         return (
             <div>
-                {/* {section} */}
-                <BookShelf headerTitle="Current Reading" styleColor="bookshelf--green"/>
-                <BookShelf headerTitle="Current Reading" styleColor="bookshelf--blue"/>
-                <BookShelf headerTitle="Current Reading" styleColor="bookshelf--orange"/>
+                <BookShelf 
+                    books={this.state.books} 
+                    type={ShelfType.CURRENTLY_READING}
+                    headerTitle="Current Reading" 
+                    styleColor="bookshelf--green"
+                    onMoveTo={this.onMoveTo}/>
+                <BookShelf 
+                    books={this.state.books} 
+                    type={ShelfType.WANT_TO_READ}
+                    headerTitle="Want to read" 
+                    styleColor="bookshelf--blue"
+                    onMoveTo={this.onMoveTo}/>
+                <BookShelf 
+                    books={this.state.books} 
+                    type={ShelfType.READ}
+                    headerTitle="Read" 
+                    styleColor="bookshelf--orange"
+                    onMoveTo={this.onMoveTo}/>
                 <Footer />
             </div>
         );
