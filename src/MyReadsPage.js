@@ -1,10 +1,7 @@
 import React, { Component } from 'react'
 import * as BooksAPI from './BooksAPI'
 import BookShelf from './components/BookShelf'
-import MainHeader from './components/MainHeader'
-import Features from './components/Features'
 import Footer from './components/Footer'
-import SearchSection from './components/SearchSection'
 import * as Actions from './components/Actions'
 import * as ShelfType from './components/ShelfType'
 

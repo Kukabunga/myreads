@@ -10,7 +10,7 @@ class BookList extends Component {
     }
 
     render() {
-        const infos = this.props.books.filter(book => book.shelf == this.props.type)
+        const infos = this.props.books.filter(book => book.shelf === this.props.type)
         return (
             <div>
                 <div className="row grid-wrapper">

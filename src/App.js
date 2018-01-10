@@ -1,9 +1,6 @@
 import React from 'react'
 import './App.css'
-import BookShelf from './components/BookShelf'
 import MainHeader from './components/MainHeader'
-import Features from './components/Features'
-import Footer from './components/Footer'
 import { Route } from 'react-router-dom'
 import HomePage from './HomePage';
 import MyReadsPage from './MyReadsPage'
