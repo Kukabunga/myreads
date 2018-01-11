@@ -34,6 +34,7 @@ class MyReadsPage extends Component {
                 case Actions.READ:
                     this.reAssignShelf(books[0], ShelfType.READ)
                     break;
+                default: return;
             }
         }
     }

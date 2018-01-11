@@ -10,15 +10,19 @@ class SearchPage extends Component {
         searchStarted: false
     }
     onFindBooks = (e) => {
-        if (e.which == 13 || e.keyCode == 13) {
+        if (e.which === 13 || e.keyCode === 13) {
             const query = e.target.value;
             if (query) {
                 this.setState({ ...this.state, searchStarted: true, nothingWasFound: false })
                 BooksAPI.search(
                     query.trim()).then((books) => {
-                        this.setState({ books: books, searchStarted: false, nothingWasFound: books.error !== undefined })
+                        this.setState({
+                            books: books.error === undefined ? books : [],
+                            searchStarted: false,
+                            nothingWasFound: books.error !== undefined
+                        })
                     }).catch((e) => {
-                        this.setState({...this.state, nothingWasFound: true })
+                        this.setState({ ...this.state, nothingWasFound: true })
                     });
             }
         }
