@@ -370,7 +370,7 @@
      background-size: cover;
      background-position: center;
      background-attachment: fixed;
-     min-height: 50rem;
+     min-height: 100vh;
  }
 
  .empy-section__header {
@@ -851,4 +851,14 @@ input[type=search]::-webkit-search-cancel-button {
 .nothing-found span {
     display: inline-block;
     font-size: 2em;
+}
+
+.remove {
+    position: absolute;
+    right: 10px;
+    top: 5px;
+    font-size: 3rem;
+    font-weight: 700;
+    color: #fff;
+    text-decoration: none;
 }
