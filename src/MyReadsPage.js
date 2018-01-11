@@ -1,13 +1,16 @@
 import React, { Component } from 'react'
+import escapeRegExp from 'escape-string-regexp'
 import * as BooksAPI from './BooksAPI'
 import BookShelf from './components/BookShelf'
 import Footer from './components/Footer'
+import Filter from './components/Filter'
 import * as Actions from './components/Actions'
 import * as ShelfType from './components/ShelfType'
 
 class MyReadsPage extends Component {
     state = {
-        books: []
+        books: [],
+        query: ''
     }
     componentDidMount() {
         BooksAPI.getAll().then((books) => { this.setState({ books }) });
@@ -15,8 +18,9 @@ class MyReadsPage extends Component {
 
     reAssignShelf = (book, newShelf) => {
         const index = this.state.books.indexOf(book)
-        this.setState({ books: 
-            Object.values({ ...this.state.books, [index]: { ...this.state.books[index], shelf: newShelf } }) 
+        this.setState({
+            books:
+                Object.values({ ...this.state.books, [index]: { ...this.state.books[index], shelf: newShelf } })
         })
     }
 
@@ -38,23 +42,48 @@ class MyReadsPage extends Component {
             }
         }
     }
+    onFilter = (query) => {
+        this.setState({ query: query })
+    }
+
+    filterBooks = () => {
+        const { query, books } = this.state;
+        let showingBooks = books;
+        if (query) {
+            const match = new RegExp(escapeRegExp(query), 'i')
+            showingBooks = books.filter((book) => {
+                let titleMatch
+                let authorMatch
+                if (book.title) {
+                    titleMatch = match.test(book.title);
+                }
+                if (book.authors) {
+                    authorMatch = match.test(book.authors.join(","))
+                }
+                return titleMatch || authorMatch;
+            })
+        }
+        return showingBooks;
+    }
     render() {
+        let showingBooks = this.filterBooks();
         return (
             <div>
                 <BookShelf
-                    books={this.state.books}
+                    books={showingBooks}
                     type={ShelfType.CURRENTLY_READING}
                     headerTitle="Current Reading"
                     styleColor="bookshelf--green"
-                    onMoveTo={this.onMoveTo} />
+                    onMoveTo={this.onMoveTo}
+                    filter={<Filter onFilter={this.onFilter} />} />
                 <BookShelf
-                    books={this.state.books}
+                    books={showingBooks}
                     type={ShelfType.WANT_TO_READ}
                     headerTitle="Want to read"
                     styleColor="bookshelf--blue"
                     onMoveTo={this.onMoveTo} />
                 <BookShelf
-                    books={this.state.books}
+                    books={showingBooks}
                     type={ShelfType.READ}
                     headerTitle="Read"
                     styleColor="bookshelf--orange"
