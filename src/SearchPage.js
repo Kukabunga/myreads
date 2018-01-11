@@ -4,12 +4,14 @@ import Footer from './components/Footer'
 import * as BooksAPI from './BooksAPI'
 import * as Actions from './components/Actions'
 import * as ShelfType from './components/ShelfType'
+import AddNewBookPopup from './components/AddNewBookPopup'
 
 
 class SearchPage extends Component {
     state = {
         books: [],
-        searchStarted: false
+        searchStarted: false,
+        showAddBookPopup: false,
     }
     onFindBooks = (e) => {
         if (e.which === 13 || e.keyCode === 13) {
@@ -30,9 +32,8 @@ class SearchPage extends Component {
         }
     }
     reAssignShelf = (book, newShelf) => {
-        const index = this.state.books.indexOf(book)
         BooksAPI.update(book, newShelf).then((response) => {
-            console.log(response)
+            this.setState({...this.state, showAddBookPopup: true})
         });
     }
     onAddBook = (e, action, bookid) => {
@@ -53,6 +54,12 @@ class SearchPage extends Component {
             }
         }
     } 
+
+    onClose = (e) => {
+        e.preventDefault();
+        this.setState({...this.state, showAddBookPopup: false})
+    }
+
     render() {
         return (
             <div>
@@ -62,6 +69,7 @@ class SearchPage extends Component {
                     searchStarted={this.state.searchStarted}
                     nothingWasFound={this.state.nothingWasFound}
                     onAddBook={this.onAddBook} />
+                    {this.state.showAddBookPopup && <AddNewBookPopup onClose={this.onClose} />}
                 <Footer />
             </div>
         )

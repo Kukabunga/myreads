@@ -17,9 +17,9 @@ class MyReadsPage extends Component {
     }
 
     reAssignShelf = (book, newShelf) => {
+        if (book.shelf === newShelf) return;
         const index = this.state.books.indexOf(book)
         BooksAPI.update(book, newShelf).then((response) => {
-            console.log(response)
             this.setState({
                 books:
                     Object.values({ ...this.state.books, [index]: { ...this.state.books[index], shelf: newShelf } })
@@ -71,26 +71,29 @@ class MyReadsPage extends Component {
     render() {
         let showingBooks = this.filterBooks();
         return (
-            <div>
+            <div className="myreads">
                 <BookShelf
                     books={showingBooks}
                     type={ShelfType.CURRENTLY_READING}
                     headerTitle="Current Reading"
                     styleColor="bookshelf--green"
                     onMoveTo={this.onMoveTo}
-                    filter={<Filter onFilter={this.onFilter} />} />
+                    filter={<Filter onFilter={this.onFilter} />}
+                     />
                 <BookShelf
                     books={showingBooks}
                     type={ShelfType.WANT_TO_READ}
                     headerTitle="Want to read"
                     styleColor="bookshelf--blue"
-                    onMoveTo={this.onMoveTo} />
+                    onMoveTo={this.onMoveTo}
+                     />
                 <BookShelf
                     books={showingBooks}
                     type={ShelfType.READ}
                     headerTitle="Read"
                     styleColor="bookshelf--orange"
-                    onMoveTo={this.onMoveTo} />
+                    onMoveTo={this.onMoveTo}
+                     />
                 <Footer />
             </div>
         );

@@ -11,7 +11,7 @@ class Book extends Component {
     }
 
     render() {
-        const { info, onMoveTo, onShowDescription } = this.props;
+        const { info, onMoveTo, onShowDescription} = this.props;
         return (
             <div className="card">
                 <div className="card__side card__side--front">
@@ -22,7 +22,6 @@ class Book extends Component {
                     <div className="book__authors">{info.authors ? info.authors.join(", ") : ""}</div>
                 </div>
                 <div className="card__side card__side--back card__side--back-2">
-                    <a className="remove" href="#">&times;</a>
                     <div className="card__cta">
                         <div className="card__price-box">
                             <a href="#" onClick={(e) => onMoveTo(e, Actions.CURRENTLY_READING, info.id)} className="btn__card">Current Reading</a>

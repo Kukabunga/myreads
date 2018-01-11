@@ -21,7 +21,7 @@ class BookList extends Component {
 
     onClose = (e) => {
         e.preventDefault();
-        this.setState({showDescription: false, book: {}})
+        this.setState({ showDescription: false, showAddBookPopup: false, book: {} })
     }
 
     render() {
@@ -34,14 +34,16 @@ class BookList extends Component {
                             return <Book key={info.id}
                                 onMoveTo={this.props.onMoveTo}
                                 info={info}
-                                onShowDescription={this.onShowDescription} />
+                                onShowDescription={this.onShowDescription}
+                                />
                         })
                     }
                 </div>
-                {this.state.showDescription && <DescriptionPopup 
-                    title={this.state.book.title} 
+                {this.state.showDescription && <DescriptionPopup
+                    title={this.state.book.title}
                     description={this.state.book.description}
                     onClose={this.onClose} />}
+                
             </div>
         );
     }
