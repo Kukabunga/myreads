@@ -17,7 +17,7 @@ class Book extends Component {
                         <div className="book" style={{ backgroundImage: `url(${info.imageLinks.thumbnail})` }}></div>
                     </div>
                     <div className="book__heading">{info.title}</div>
-                    <div className="book__authors">{info.authors.join(", ")}</div>
+                    <div className="book__authors">{info.authors ? info.authors.join(", "): ""}</div>
                 </div>
                 <div className="card__side card__side--back card__side--back-2">
                     <div className="card__cta">

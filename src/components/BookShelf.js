@@ -6,10 +6,10 @@ import Loader from './Loader'
 
 class BookShelf extends Component {
     static propTypes = {
-        headerTitle: PropTypes.string.isRequired,
+        headerTitle: PropTypes.string,
         styleColor: PropTypes.string,
         books: PropTypes.array,
-        type: PropTypes.string.isRequired,
+        type: PropTypes.string,
         onMoveTo: PropTypes.func
     }
     render() {

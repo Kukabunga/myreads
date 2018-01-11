@@ -5,7 +5,7 @@ import Book from './Book'
 class BookList extends Component {
     static propTypes = {
         books: PropTypes.array,
-        type: PropTypes.string.isRequired,
+        type: PropTypes.string,
         onMoveTo: PropTypes.func
     }
 
