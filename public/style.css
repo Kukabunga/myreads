@@ -428,17 +428,21 @@
     width: 5rem;
     height: 5rem;
     border-radius: 5em;
-    -webkit-transition: .3s;
-    transition: .3s;
     outline: none;
-    cursor: pointer;
     -webkit-appearance: none;
-    color: rgb(29, 23, 23);
+    color: #fff;
     vertical-align: baseline;
     font-size: 2rem;
     padding-left: 2.4rem;
     width: 50rem;
     cursor: text;
+}
+.filter::-webkit-input-placeholder {
+    color: #fff;
+}
+
+.filter::-moz-placeholder {
+    color: #fff;
 }
 
 .filter-box {
