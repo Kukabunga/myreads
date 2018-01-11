@@ -77,7 +77,8 @@
      padding: 8px 0;
  }
 
- .main-nav li a:hover, .main-nav li a:active {
+ .main-nav li:not(:first-child) a:hover, 
+ .main-nav li:not(:first-child) a:active {
      border-bottom: 2px solid #2ecc71;
  }
 
