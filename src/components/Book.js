@@ -6,10 +6,12 @@ import * as Actions from './Actions'
 class Book extends Component {
     static propTypes = {
         info: PropTypes.object.isRequired,
-        onMoveTo: PropTypes.func
+        onMoveTo: PropTypes.func,
+        onShowDescription: PropTypes.func
     }
+
     render() {
-        const { info, onMoveTo } = this.props;
+        const { info, onMoveTo, onShowDescription } = this.props;
         return (
             <div className="card">
                 <div className="card__side card__side--front">
@@ -28,7 +30,7 @@ class Book extends Component {
                             <a href="#" onClick={(e) => onMoveTo(e, Actions.READ, info.id)} className="btn__card">Read</a>
                         </div>
                         <div className="margin-top-30">
-                            <a href="#" className="btn-text btn-text--white">Description</a>
+                            <a href="#" onClick={(e) => onShowDescription(e, info)} className="btn-text btn-text--white">Description</a>
                         </div>
                     </div>
                 </div>
