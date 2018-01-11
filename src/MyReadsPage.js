@@ -18,10 +18,13 @@ class MyReadsPage extends Component {
 
     reAssignShelf = (book, newShelf) => {
         const index = this.state.books.indexOf(book)
-        this.setState({
-            books:
-                Object.values({ ...this.state.books, [index]: { ...this.state.books[index], shelf: newShelf } })
-        })
+        BooksAPI.update(book, newShelf).then((response) => {
+            console.log(response)
+            this.setState({
+                books:
+                    Object.values({ ...this.state.books, [index]: { ...this.state.books[index], shelf: newShelf } })
+            })
+        });
     }
 
     onMoveTo = (e, action, bookid) => {
