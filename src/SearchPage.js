@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import SearchSection from './components/SearchSection'
 import Footer from './components/Footer'
 import * as BooksAPI from './BooksAPI'
@@ -8,10 +9,14 @@ import AddNewBookPopup from './components/AddNewBookPopup'
 
 
 class SearchPage extends Component {
+    static propTypes = {
+        booksInLibrary: PropTypes.array,
+        onMoveTo: PropTypes.func
+    }
     state = {
         books: [],
         searchStarted: false,
-        showAddBookPopup: false,
+        showAddBookPopup: false
     }
     onFindBooks = (e) => {
         if (e.which === 13 || e.keyCode === 13) {
@@ -20,8 +25,14 @@ class SearchPage extends Component {
                 this.setState({ ...this.state, searchStarted: true, nothingWasFound: false })
                 BooksAPI.search(
                     query.trim()).then((books) => {
+                        const newBooks = books.map(c => {
+                            const i = this.props.booksInLibrary.indexOf[c]
+                            if (i != -1) {
+                                return {...c, shelf: this.props.booksInLibrary[i].shelf}
+                            }
+                        })
                         this.setState({
-                            books: books.error === undefined ? books : [],
+                            books: newBooks.error === undefined ? books : [],
                             searchStarted: false,
                             nothingWasFound: books.error !== undefined
                         })
@@ -31,28 +42,10 @@ class SearchPage extends Component {
             }
         }
     }
-    reAssignShelf = (book, newShelf) => {
-        BooksAPI.update(book, newShelf).then((response) => {
+    onAddBook = (action, newBook) => {
+        this.props.onMoveTo(action, newBook).then(() => {
             this.setState({...this.state, showAddBookPopup: true})
-        });
-    }
-    onAddBook = (e, action, bookid) => {
-        e.preventDefault();
-        const books = this.state.books.filter(book => book.id === bookid);
-        if (books.length > 0) {
-            switch (action) {
-                case Actions.CURRENTLY_READING:
-                    this.reAssignShelf(books[0], ShelfType.CURRENTLY_READING)
-                    break;
-                case Actions.WANT_TO_READ:
-                    this.reAssignShelf(books[0], ShelfType.WANT_TO_READ)
-                    break;
-                case Actions.READ:
-                    this.reAssignShelf(books[0], ShelfType.READ)
-                    break;
-                default: return;
-            }
-        }
+        })
     } 
 
     onClose = (e) => {

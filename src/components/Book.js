@@ -10,8 +10,13 @@ class Book extends Component {
         onShowDescription: PropTypes.func
     }
 
+    onMoveTo(e, action) {
+        e.preventDefault();
+        this.props.onMoveTo(action, this.props.info)
+    }
+
     render() {
-        const { info, onMoveTo, onShowDescription} = this.props;
+        const { info, onShowDescription} = this.props;
         return (
             <div className="card">
                 <div className="card__side card__side--front">
@@ -24,9 +29,9 @@ class Book extends Component {
                 <div className="card__side card__side--back card__side--back-2">
                     <div className="card__cta">
                         <div className="card__price-box">
-                            <a href="#" onClick={(e) => onMoveTo(e, Actions.CURRENTLY_READING, info.id)} className="btn__card">Current Reading</a>
-                            <a href="#" onClick={(e) => onMoveTo(e, Actions.WANT_TO_READ, info.id)} className="btn__card">Want to Read</a>
-                            <a href="#" onClick={(e) => onMoveTo(e, Actions.READ, info.id)} className="btn__card">Read</a>
+                            <a href="#" onClick={(e) => this.onMoveTo(e, Actions.CURRENTLY_READING)} className="btn__card">Current Reading</a>
+                            <a href="#" onClick={(e) => this.onMoveTo(e, Actions.WANT_TO_READ)} className="btn__card">Want to Read</a>
+                            <a href="#" onClick={(e) => this.onMoveTo(e, Actions.READ)} className="btn__card">Read</a>
                         </div>
                         <div className="margin-top-30">
                             <a href="#" onClick={(e) => onShowDescription(e, info)} className="btn-text btn-text--white">Description</a>

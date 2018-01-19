@@ -5,9 +5,57 @@ import MainMenu from "./components/MainMenu"
 import HomePage from './HomePage';
 import MyReadsPage from './MyReadsPage'
 import SearchPage from './SearchPage'
+import * as Actions from './components/Actions'
+import * as BooksAPI from './BooksAPI'
+import BookShelf from './components/BookShelf'
+import * as ShelfType from './components/ShelfType'
 
 class BooksApp extends React.Component {
+  state = {
+    books: []
+  }
+
+  onMoveTo = (action, newBook) => {
+    if (!newBook || !action) {
+      return
+    }
+    switch (action) {
+      case Actions.CURRENTLY_READING:
+        return this.reAssignShelf(newBook, ShelfType.CURRENTLY_READING)
+      case Actions.WANT_TO_READ:
+        return this.reAssignShelf(newBook, ShelfType.WANT_TO_READ)
+      case Actions.READ:
+        return this.reAssignShelf(newBook, ShelfType.READ)
+      default: return;
+    }
+  }
+
+  reAssignShelf = (book, newShelf) => {
+    if (book && book.shelf === newShelf) return;
+    const index = this.state.books.indexOf(book)
+    if (index != -1) {
+      return BooksAPI.update(book, newShelf).then((response) => {
+        this.setState({
+          books:
+            Object.values({ ...this.state.books, [index]: { ...this.state.books[index], shelf: newShelf } })
+        })
+      });
+    } else {
+      return BooksAPI.update(book, newShelf).then(r => r);
+    }
+  }
+
+  onGetAll = () => {
+    BooksAPI.getAll().then((books) => { this.setState({ books }) });
+  }
+
   render() {
+    const { books
+      , searchStarted
+      , showAddBookPopup
+      , query
+    } = this.state;
+
     return (
       <div>
         <MainMenu />
@@ -18,10 +66,17 @@ class BooksApp extends React.Component {
           </div>
         )} />
         <Route exact path="/myreads" render={() => (
-          <MyReadsPage />
+          <MyReadsPage
+            books={books}
+            onGetAll={this.onGetAll}
+            onMoveTo={this.onMoveTo} />
         )} />
         <Route exact path="/search" render={() => (
-          <SearchPage />
+          <SearchPage
+            books={books}
+            searchStarted={searchStarted}
+            showAddBookPopup={showAddBookPopup}
+            onMoveTo={this.onMoveTo} />
         )} />
       </div>
     )
