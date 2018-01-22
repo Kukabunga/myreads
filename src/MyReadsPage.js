@@ -16,11 +16,9 @@ class MyReadsPage extends Component {
     state = {
         query: ''
     }
-
     componentDidMount() {
-        this.props.onGetAll();
+        this.props.onGetAll()
     }
-
     onFilter = (query) => {
         this.setState({ query: query })
     }

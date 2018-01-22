@@ -23,16 +23,18 @@ class SearchPage extends Component {
             const query = e.target.value;
             if (query) {
                 this.setState({ ...this.state, searchStarted: true, nothingWasFound: false })
+                const libBooks = this.props.booksInLibrary;
                 BooksAPI.search(
                     query.trim()).then((books) => {
-                        const newBooks = books.map(c => {
-                            const i = this.props.booksInLibrary.indexOf[c]
-                            if (i != -1) {
-                                return {...c, shelf: this.props.booksInLibrary[i].shelf}
+                        let newBooks = books.map(c => {
+                            const b = libBooks.filter(b => b.id === c.id)
+                            if (b.length > 0) {
+                                return {...c, shelf: b[0].shelf}
                             }
+                            return c
                         })
                         this.setState({
-                            books: newBooks.error === undefined ? books : [],
+                            books: books.error === undefined ? newBooks : [],
                             searchStarted: false,
                             nothingWasFound: books.error !== undefined
                         })
@@ -42,7 +44,7 @@ class SearchPage extends Component {
             }
         }
     }
-    onAddBook = (action, newBook) => {
+    onMoveTo = (action, newBook) => {
         this.props.onMoveTo(action, newBook).then(() => {
             this.setState({...this.state, showAddBookPopup: true})
         })
@@ -61,7 +63,7 @@ class SearchPage extends Component {
                     onFindBooks={this.onFindBooks}
                     searchStarted={this.state.searchStarted}
                     nothingWasFound={this.state.nothingWasFound}
-                    onAddBook={this.onAddBook} />
+                    onMoveTo={this.onMoveTo} />
                     {this.state.showAddBookPopup && <AddNewBookPopup onClose={this.onClose} />}
                 <Footer />
             </div>

@@ -15,11 +15,19 @@ class BooksApp extends React.Component {
     books: []
   }
 
+  componentDidMount() {
+   this.onGetAll()
+  }
+
+  onGetAll = () => {
+    BooksAPI.getAll().then((books) => { this.setState({ books }) });
+  }
+
   onMoveTo = (action, newBook) => {
     if (!newBook || !action) {
       return
     }
-    switch (action) {
+    switch (action.action) {
       case Actions.CURRENTLY_READING:
         return this.reAssignShelf(newBook, ShelfType.CURRENTLY_READING)
       case Actions.WANT_TO_READ:
@@ -32,7 +40,7 @@ class BooksApp extends React.Component {
 
   reAssignShelf = (book, newShelf) => {
     if (book && book.shelf === newShelf) return;
-    const index = this.state.books.indexOf(book)
+    const index = this.state.books.findIndex(b => b.id === book.id)
     if (index != -1) {
       return BooksAPI.update(book, newShelf).then((response) => {
         this.setState({
@@ -41,14 +49,11 @@ class BooksApp extends React.Component {
         })
       });
     } else {
-      return BooksAPI.update(book, newShelf).then(r => r);
+      return BooksAPI.update(book, newShelf).then(r => {
+        this.setState({books: this.state.books.concat(book)})
+      });
     }
   }
-
-  onGetAll = () => {
-    BooksAPI.getAll().then((books) => { this.setState({ books }) });
-  }
-
   render() {
     const { books
       , searchStarted
@@ -68,12 +73,12 @@ class BooksApp extends React.Component {
         <Route exact path="/myreads" render={() => (
           <MyReadsPage
             books={books}
-            onGetAll={this.onGetAll}
-            onMoveTo={this.onMoveTo} />
+            onMoveTo={this.onMoveTo}
+            onGetAll={this.onGetAll} />
         )} />
         <Route exact path="/search" render={() => (
           <SearchPage
-            books={books}
+            booksInLibrary={books}
             searchStarted={searchStarted}
             showAddBookPopup={showAddBookPopup}
             onMoveTo={this.onMoveTo} />

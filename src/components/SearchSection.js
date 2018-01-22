@@ -18,10 +18,10 @@ class SearchSection extends Component {
         books: PropTypes.array,
         searchStarted: PropTypes.bool,
         nothingWasFound: PropTypes.bool,
-        onAddBook: PropTypes.func
+        onMoveTo: PropTypes.func
     }
     render() {
-        const { books, onFindBooks, searchStarted, nothingWasFound, onAddBook } = this.props;
+        const { books, onFindBooks, searchStarted, nothingWasFound, onMoveTo } = this.props;
         const someBooks = books && books.length > 0
         return (
             <div className="empty-section">
@@ -33,7 +33,7 @@ class SearchSection extends Component {
                 {searchStarted && <Loader />}
                 {
                     someBooks && <div className="row">
-                        <BookShelf books={books} headerTitle="Search result:" onMoveTo={onAddBook}/>
+                        <BookShelf books={books} headerTitle="Search result:" onMoveTo={onMoveTo}/>
                     </div>
                 }
             </div>

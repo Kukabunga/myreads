@@ -929,3 +929,15 @@
     background-attachment: fixed;
     /* position: relative; */
  }
+
+ .disabled {
+    pointer-events: none;
+    cursor: default;
+    color: #888 !important;
+  }
+
+  .ion-ios-checkmark-empty {
+    padding-right: 15px;
+    font-size: 1.6rem;
+    color: #06D85F;
+  }
