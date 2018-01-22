@@ -18,41 +18,47 @@ class SearchPage extends Component {
         searchStarted: false,
         showAddBookPopup: false
     }
+    
     onFindBooks = (e) => {
-        if (e.which === 13 || e.keyCode === 13) {
-            const query = e.target.value;
-            if (query) {
-                this.setState({ ...this.state, searchStarted: true, nothingWasFound: false })
-                const libBooks = this.props.booksInLibrary;
-                BooksAPI.search(
-                    query.trim()).then((books) => {
-                        let newBooks = books.map(c => {
-                            const b = libBooks.filter(b => b.id === c.id)
-                            if (b.length > 0) {
-                                return {...c, shelf: b[0].shelf}
-                            }
-                            return c
-                        })
-                        this.setState({
-                            books: books.error === undefined ? newBooks : [],
-                            searchStarted: false,
-                            nothingWasFound: books.error !== undefined
-                        })
-                    }).catch((e) => {
-                        this.setState({ ...this.state, nothingWasFound: true })
-                    });
-            }
+        const query = e.target.value;
+        if (query == "") {
+            this.setState({ books: [], searchStarted: false, showAddBookPopup: false })
+            return
         }
+
+        this.setState({ ...this.state, searchStarted: true, nothingWasFound: false })
+        const libBooks = this.props.booksInLibrary;
+        BooksAPI.search(
+            query.trim()).then((books) => {
+                if (!books.error) {
+                    let newBooks = books.map(c => {
+                        const b = libBooks.filter(b => b.id === c.id)
+                        if (b.length > 0) {
+                            return { ...c, shelf: b[0].shelf }
+                        }
+                        return c
+                    })
+                    this.setState({
+                        books: books.error === undefined ? newBooks : [],
+                        searchStarted: false,
+                        nothingWasFound: books.error !== undefined
+                    })
+                } else {
+                    this.setState({ books: [], searchStarted: false, nothingWasFound: true })
+                }
+            }).catch((e) => {
+                this.setState({ ...this.state, nothingWasFound: true, searchStarted: false })
+            });
     }
     onMoveTo = (action, newBook) => {
         this.props.onMoveTo(action, newBook).then(() => {
-            this.setState({...this.state, showAddBookPopup: true})
+            this.setState({ ...this.state, showAddBookPopup: true })
         })
-    } 
+    }
 
     onClose = (e) => {
         e.preventDefault();
-        this.setState({...this.state, showAddBookPopup: false})
+        this.setState({ ...this.state, showAddBookPopup: false })
     }
 
     render() {
@@ -64,7 +70,7 @@ class SearchPage extends Component {
                     searchStarted={this.state.searchStarted}
                     nothingWasFound={this.state.nothingWasFound}
                     onMoveTo={this.onMoveTo} />
-                    {this.state.showAddBookPopup && <AddNewBookPopup onClose={this.onClose} />}
+                {this.state.showAddBookPopup && <AddNewBookPopup onClose={this.onClose} />}
                 <Footer />
             </div>
         )

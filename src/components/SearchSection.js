@@ -27,7 +27,7 @@ class SearchSection extends Component {
             <div className="empty-section">
                 <div className="row padding-top-30">
                     <h2 className="empy-section__header header--white">Would you like to find new books?</h2>
-                    <input type="search" className="search margin-top-30" onKeyPress={onFindBooks} />
+                    <input type="search" className="search margin-top-30" onChange={onFindBooks} />
                 </div>
                 {nothingWasFound && <NothingToShow />}
                 {searchStarted && <Loader />}
